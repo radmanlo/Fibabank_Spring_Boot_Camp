@@ -23,7 +23,7 @@ public class CustomerController {
 
     @GetMapping("/post")
     @ResponseBody
-    public  String postCustomer(){
+    public String postCustomer(){
         Customer customer = new Customer(0, "Mert Duran", 20000);
         String url = "http://localhost:8080/api/customer/";
         RestTemplate restTemplate = new RestTemplate();
@@ -33,7 +33,7 @@ public class CustomerController {
 
     @GetMapping("/put")
     @ResponseBody
-    public  String putCustomer(){
+    public String putCustomer(){
         Customer customer = new Customer(104, "Gunes Ustunalp", 15000);
         String url = "http://localhost:8080/api/customer/";
         RestTemplate restTemplate = new RestTemplate();
@@ -43,7 +43,7 @@ public class CustomerController {
 
     @GetMapping("/delete")
     @ResponseBody
-    public  String delCustomer(){
+    public String delCustomer(){
         long customerId = 106;
         String url = "http://localhost:8080/api/customer/" + customerId;
         RestTemplate restTemplate = new RestTemplate();
