@@ -38,8 +38,8 @@ public class EmployeeResource {
         System.out.println(employee.toString());
     }
 
-    @DeleteMapping("/employee")
-    public void delEmployee(){
-        System.out.println("employee by " + 103 + " is deleted");
+    @DeleteMapping("/employee/{id}")
+    public void delEmployee( @PathVariable("id") long employeeId){
+        System.out.println("employee by " + employeeId + " is deleted");
     }
 }

@@ -18,7 +18,7 @@ public class EmployeeController {
         String url = "http://localhost:8080/api/employee/" + employeeId;
         RestTemplate restTemplate = new RestTemplate();
         Employee employee = restTemplate.getForObject(url, Employee.class);
-        return "Employee is added by " + employee.getEmployeeId() + " id";
+        return employee.toString();
     }
 
     @GetMapping("/post")
@@ -44,7 +44,8 @@ public class EmployeeController {
     @GetMapping("/delete")
     @ResponseBody
     public  String delEmployee(){
-        String url = "http://localhost:8080/api/employee/";
+        long employeeId = 106;
+        String url = "http://localhost:8080/api/employee/" + employeeId;
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.delete(url);
         return "Employee is Deleted" ;
