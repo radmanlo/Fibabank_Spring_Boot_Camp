@@ -67,12 +67,14 @@ public class CartAndCartProductServiceImpl implements CartAndCartProductService{
         CartProduct cartProduct = cartProductRepository.findProductByCartIdAAndProductId(cartId, productId);
         if (cartProduct != null){
             if(cartProduct.getSalesQuantity() == 1){
+                cartProduct.getCart().setTotalAmount(cartProduct.getCart().getTotalAmount() - cartProduct.getSalesPrice());
                 cartProductRepository.deleteProductFromCart(cartId, productId);
                 return true;
             }
             else {
                 cartProduct.setSalesQuantity(cartProduct.getSalesQuantity() - 1);
                 cartProduct.setLineAmount(cartProduct.getSalesQuantity() * cartProduct.getSalesPrice());
+                cartProduct.getCart().setTotalAmount(cartProduct.getCart().getTotalAmount() - cartProduct.getSalesPrice());
                 cartProductRepository.save(cartProduct);
                 return true;
             }
