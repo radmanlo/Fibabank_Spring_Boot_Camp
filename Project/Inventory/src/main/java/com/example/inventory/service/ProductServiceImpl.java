@@ -44,6 +44,7 @@ public class ProductServiceImpl implements ProductService{
             productDto.setSalesPrice(product.getSalesPrice());
             return productDto;
         }
+        System.out.println("product Id is INVALID");
         return null;
     }
 }

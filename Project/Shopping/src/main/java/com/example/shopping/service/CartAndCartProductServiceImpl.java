@@ -25,31 +25,68 @@ public class CartAndCartProductServiceImpl implements CartAndCartProductService{
     @Override
     public CartProductDto addProduct(CartProductDto cartProductDto) {
         CartDto cartDto = cartProductDto.getCartDto();
-        if (cartRepository.findById(cartProductDto.getCartDto().getCartId()) != null){
-            CartProduct cartProduct = new CartProduct();
+        Optional<Cart> optCart = cartRepository.findById(cartProductDto.getCartDto().getCartId());
+        if (optCart.isPresent()){
+            Cart cart = optCart.get();
+            if (cart.isCartStatus()){
+                System.out.println("Cart is checkout");
+                return null;
+            }
+            CartProduct cartProduct = cartProductRepository.findProductByCartIdAAndProductId( cartProductDto.getCartDto().getCartId(),
+                                                                                                cartProductDto.getProductId());
+
+            if (cartProduct != null){
+                cartProduct.setSalesQuantity(cartProduct.getSalesQuantity() + 1);
+                cartProduct.setLineAmount(cartProduct.getSalesQuantity()* cartProduct.getSalesPrice());
+                cart.setTotalAmount(cart.getTotalAmount() + cartProduct.getSalesPrice());
+                cartProduct.setCart(cart);
+                cartProductRepository.save(cartProduct);
+                System.out.println("Quantity is increment");
+                return cartProductDto;
+            }
+            cartProduct = new CartProduct();
             cartProduct.setCartProductId(cartProductDto.getCartProductId());
-            cartProduct.setProductId(cartProductDto.getCartProductId());
-            cartProduct.setSalesQuantity(cartProductDto.getSalesQuantity());
+            System.out.println("cartProductDto productId: " + cartProductDto.getProductId());
+            cartProduct.setProductId(cartProductDto.getProductId());
+            System.out.println("cartProduct productId: " + cartProduct.getProductId());
+            cartProduct.setSalesQuantity(1);
             cartProduct.setSalesPrice(cartProductDto.getSalesPrice());
-            cartProduct.setLineAmount(cartProductDto.getLineAmount());
-            Cart cart = new Cart();
-            cart.setCartStatus(cartDto.isCartStatus());
-            cart.setCustomerName(cartDto.getCustomerName());
-            cart.setCartId(cartDto.getCartId());
-            cart.setTotalAmount(cartDto.getTotalAmount());
+            cartProduct.setLineAmount(cartProduct.getSalesQuantity()* cartProduct.getSalesPrice());
+            cart.setTotalAmount( cart.getTotalAmount() + (cartProduct.getSalesQuantity()* cartProduct.getSalesPrice()));
             cartProduct.setCart(cart);
             cartProductRepository.save(cartProduct);
             System.out.println("product is added");
             return cartProductDto;
         }
-        System.out.println("No such cart id");
+        System.out.println("CartId is INVALID");
         return null;
     }
 
     @Override
-    public void deleteProductFromCart(long cartId, long productId) {
-        cartProductRepository.deleteProductFromCart(cartId, productId);
-        System.out.println("delete is successful");
+    public Boolean deleteProductFromCart(long cartId, long productId) {
+        CartProduct cartProduct = cartProductRepository.findProductByCartIdAAndProductId(cartId, productId);
+        if (cartProduct != null){
+            if(cartProduct.getSalesQuantity() == 1){
+                cartProductRepository.deleteProductFromCart(cartId, productId);
+                return true;
+            }
+            else {
+                cartProduct.setSalesQuantity(cartProduct.getSalesQuantity() - 1);
+                cartProduct.setLineAmount(cartProduct.getSalesQuantity() * cartProduct.getSalesPrice());
+                cartProductRepository.save(cartProduct);
+                return true;
+            }
+        }
+        else {
+            if(cartRepository.findById(cartId).isPresent()){
+                if (cartProduct == null){
+                    System.out.println("Cart product with cartId: " + cartId + " and productId: " + productId + " is INVALID");
+                }
+            }
+            else
+                System.out.println("Cart Id is INVALID");
+            return false;
+        }
     }
 
     @Override

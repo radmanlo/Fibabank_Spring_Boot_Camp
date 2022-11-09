@@ -19,8 +19,11 @@ public class CategoryServiceImpl implements CategoryService{
     @Override
     public List<CategoryDto> getAllCategories() {
         List<Category> categories = (List<Category>) categoryRepository.findAll();
+        if (categories.isEmpty()){
+            System.out.println("CategoryId is INVALID");
+            return null;
+        }
         List<CategoryDto> categoryDtos = new ArrayList<>();
-        System.out.println("I am here1");
         for(Category cat: categories){
             CategoryDto catDto = new CategoryDto();
             catDto.setCategoryId(cat.getCategoryId());

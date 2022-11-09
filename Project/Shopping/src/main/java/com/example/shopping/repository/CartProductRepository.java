@@ -13,7 +13,13 @@ import java.util.List;
 public interface CartProductRepository extends CrudRepository<CartProduct, Long> {
 
     @Query("select p from CartProduct p where p.cart.cartId = :cartId")
-    List<CartProduct> findProductByCartId(@Param("cartId") long categoryId);
+    List<CartProduct> findProductByCartId(@Param("cartId") long cartId);
+
+    @Query("select p from CartProduct p where p.cart.cartId = :cartId and p.productId = :productId")
+    CartProduct findProductByCartIdAAndProductId(@Param("cartId") long cartId , @Param("productId") long productId);
+
+    /*@Query("update CartProduct c set c.salesQuantity =:, c.lineAmount where ")
+    CartProduct findProductByCartIdAAndProductId(@Param("cartId") long cartId , @Param("productId") long productId);*/
 
     @Transactional
     @Modifying

@@ -15,23 +15,20 @@ public class ShoppingController {
     @Autowired
     private CartAndCartProductService cartAndCartProductService;
 
-    @GetMapping("/cart/create/{customerName}/{totalAmount}")
-    public long create(@PathVariable("customerName") String customerName,
-                       @PathVariable("totalAmount") double totalAmount){
+    @GetMapping("/cart/create/{customerName}")
+    public long create(@PathVariable("customerName") String customerName){
         CartDto cartDto = new CartDto();
         cartDto.setCustomerName(customerName);
-        cartDto.setTotalAmount(totalAmount);
         cartDto.setCartStatus(false);
         return cartAndCartProductService.createCart(cartDto);
     }
 
     @PostMapping("/cart/add")
     public CartProductDto addProductToCart(@RequestBody CartProductDto cartProductDto){
-        cartAndCartProductService.addProduct(cartProductDto);
-        return cartProductDto;
+        return cartAndCartProductService.addProduct(cartProductDto);
     }
 
-    @DeleteMapping("/cart/{cartId}/remove/{productId}")
+    @DeleteMapping("/cart/remove/{cartId}/{productId}")
     public void deleteProductFromCart(@PathVariable("cartId") long cardId,
                                      @PathVariable("productId") long productId){
         cartAndCartProductService.deleteProductFromCart(cardId, productId);

@@ -8,7 +8,7 @@ import java.util.List;
 public interface CartAndCartProductService {
 
     CartProductDto addProduct(CartProductDto productDto);
-    void deleteProductFromCart (long CartId, long productId);
+    Boolean deleteProductFromCart (long CartId, long productId);
     long createCart(CartDto cartDto);
     String checkout( long cartId);
     CartDto findCart( long cartId);
