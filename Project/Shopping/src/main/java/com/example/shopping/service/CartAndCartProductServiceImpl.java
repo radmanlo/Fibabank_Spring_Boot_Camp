@@ -22,6 +22,12 @@ public class CartAndCartProductServiceImpl implements CartAndCartProductService{
     @Autowired
     private CartRepository cartRepository;
 
+    /**
+     * add ProductCart into the cartProduct table
+     *
+     * @param cartProductDto product data transfer object
+     * @return CartProductDto
+     */
     @Override
     public CartProductDto addProduct(CartProductDto cartProductDto) {
         CartDto cartDto = cartProductDto.getCartDto();
@@ -62,6 +68,13 @@ public class CartAndCartProductServiceImpl implements CartAndCartProductService{
         return null;
     }
 
+    /**
+     * delete product from cartProduct table by getting cartId and productId
+     *
+     * @param cartId cart ID
+     * @param productId product ID
+     * @return boolean
+     */
     @Override
     public Boolean deleteProductFromCart(long cartId, long productId) {
         CartProduct cartProduct = cartProductRepository.findProductByCartIdAAndProductId(cartId, productId);
@@ -91,6 +104,12 @@ public class CartAndCartProductServiceImpl implements CartAndCartProductService{
         }
     }
 
+    /**
+     * create a CartProduct and add it into the cart table
+     *
+     * @param cartDto cartDto
+     * @return long (cartId of the created cart)
+     */
     @Override
     public long createCart(CartDto cartDto) {
         Cart cart = new Cart();
@@ -101,6 +120,12 @@ public class CartAndCartProductServiceImpl implements CartAndCartProductService{
         return cart.getCartId();
     }
 
+    /**
+     * checkout of a CartProduct by making cartStatus true;
+     *
+     * @param cartId cart ID
+     * @return String
+     */
     @Override
     public String checkout(long cartId) {
         Optional<Cart> optCart = cartRepository.findById(cartId);
@@ -124,6 +149,12 @@ public class CartAndCartProductServiceImpl implements CartAndCartProductService{
         return "there is not such cart ID";
     }
 
+    /**
+     * getting a cart from cart Table by its cartId
+     *
+     * @param cartId cart ID
+     * @return  CartDto (Cart data transfer object)
+     */
     @Override
     public CartDto findCart(long cartId) {
         Optional<Cart> optCart = cartRepository.findById(cartId);
@@ -140,6 +171,11 @@ public class CartAndCartProductServiceImpl implements CartAndCartProductService{
         return null;
     }
 
+    /**
+     * getting all carts from cart Table
+     *
+     * @return list of CartDto
+     */
     @Override
     public List<CartDto> AllCarts() {
         Iterable<Cart> carts = cartRepository.findAll();

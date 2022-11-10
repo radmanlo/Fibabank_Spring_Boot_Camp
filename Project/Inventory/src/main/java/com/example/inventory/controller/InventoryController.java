@@ -20,34 +20,36 @@ public class InventoryController {
     @Autowired
     private ProductService productService;
 
+    /**
+     * get all categories by Rest API
+     *
+     * @return List od category
+     */
     @GetMapping("/categories")
     public List<CategoryDto> getCategories(){
         return categoryService.getAllCategories();
     }
 
+    /**
+     * getting products by categoryId
+     *
+     * @param categoryId category ID
+     * @return list of ProductDto
+     */
     @GetMapping("/products/{categoryId}")
     public List<ProductDto> getProductByCategoryId(@PathVariable("categoryId") long categoryId){
         return productService.findAllProductByCategoryId(categoryId);
     }
 
+    /**
+     * getting a product by product ID
+     *
+     * @param productId product ID
+     * @return ProductDto
+     */
     @GetMapping("/product/{productId}")
     public ProductDto getProductById( @PathVariable("productId") long productId){
         return productService.findProductById(productId);
     }
-
-   /* @GetMapping("/test")
-    public ResponseEntity<List<ProductDto>> gett(@RequestHeader long productId){
-        List<ProductDto> productDtoList = productService.findAllProductByCategoryId(productId);
-        return ResponseEntity.ok(productDtoList);
-    }*/
-
-    /*@GetMapping("/test")
-    public ResponseEntity<ProductDto> gettt(){
-        String url = "http://localhost:8081/inventory/test";
-
-        ProductDto productDto = new ProductDto();
-        productDto.setProductName("radman");
-        return ResponseEntity.ok().header("head1", "in").body(productDto);
-    }*/
 
 }

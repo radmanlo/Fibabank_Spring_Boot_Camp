@@ -19,6 +19,12 @@ public class ProductServiceImpl implements ProductService{
         this.productRepository = productRepository;
     }
 
+    /**
+     * finding products with categoryId
+     *
+     * @param categoryId category ID
+     * @return List of ProductDto
+     */
     @Override
     public List<ProductDto> findAllProductByCategoryId(long categoryId) {
         List<Product> products = productRepository.findProductsByCategoryId(categoryId);
@@ -33,6 +39,12 @@ public class ProductServiceImpl implements ProductService{
         return productDtos;
     }
 
+    /**
+     * finding product with productId
+     *
+     * @param productId product ID
+     * @return ProductDto
+     */
     @Override
     public ProductDto findProductById(long productId) {
         Optional<Product> opt = productRepository.findById(productId);

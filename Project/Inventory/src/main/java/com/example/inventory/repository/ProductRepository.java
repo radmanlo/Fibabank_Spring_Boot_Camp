@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
+
 public interface ProductRepository extends CrudRepository<Product, Long> {
 
     @Query("select p from Product p where p.category.categoryId = :categoryId")

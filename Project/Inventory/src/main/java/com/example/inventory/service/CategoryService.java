@@ -6,5 +6,10 @@ import java.util.List;
 
 public interface CategoryService {
 
+    /**
+     * getting all categories from category table
+     *
+     * @return list of categoryDto
+     */
     List<CategoryDto> getAllCategories();
 }
